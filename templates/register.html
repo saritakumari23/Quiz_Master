@@ -1,0 +1,186 @@
+{% block content %}
+<style>
+    .register-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+        background: #f8f9fa;
+        padding: 40px 0;
+    }
+    
+    /* Registration card */
+    .register-card {
+        display: flex;
+        border: 2px solid black;
+        background: white;
+        width: 900px;
+        border-radius: 16px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin: 20px 0;
+        max-height: 95vh;
+    }
+
+    /* Left section */
+    .register-left {
+        width: 40%;
+        background: rgb(30, 26, 26);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .register-left img {
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    /* Right section */
+    .register-right {
+        width: 60%;
+        padding: 20px;
+        overflow-y: auto; /* Enables scrolling if needed */
+        max-height: 90vh;
+    }
+
+    .register-right h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    /* Form styling */
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: block;
+        color: #333;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+
+    .btn-register {
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        width: 100%;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .btn-register:hover {
+        background: #0056b3;
+    }
+
+    /* Flash messages */
+    .flash-messages {
+        width: 900px;
+        margin-bottom: 10px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .register-card {
+            flex-direction: column;
+            width: 90%;
+            height: auto;
+        }
+
+        .register-left {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+        }
+
+        .register-right {
+            width: 100%;
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="register-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <div class="register-card">
+        <!-- Left Banner Section -->
+        <div class="register-left">
+            <img src="{{ url_for('static', filename='quiz.jpg') }}" alt="Registration Banner">
+        </div>
+
+        <!-- Right Form Section -->
+        <div class="register-right">
+            <h2>Sign Up</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group">
+                    {{ form.full_name.label(class="form-label") }}
+                    {{ form.full_name(class="form-control", placeholder="Enter your full name") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control", placeholder="Enter your email") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control", placeholder="Enter your password") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.confirm_password.label(class="form-label") }}
+                    {{ form.confirm_password(class="form-control", placeholder="Confirm your password") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.dob.label(class="form-label") }}
+                    {{ form.dob(class="form-control", placeholder="Enter your date of birth") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.qualification.label(class="form-label") }}
+                    {{ form.qualification(class="form-control", placeholder="Enter your qualification") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.role.label(class="form-label") }}
+                    {{ form.role(class="form-control") }}
+                </div>
+
+                <button type="submit" class="btn btn-register">Submit</button>
+            </form>
+
+            <div class="login-link">
+                Already have an account? <a href="{{ url_for('main.login') }}">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

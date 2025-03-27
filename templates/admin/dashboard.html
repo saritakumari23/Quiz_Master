@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Quiz Master</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('admin.dashboard') }}">Quiz Master Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.manage_quizzes') }}">Quizzes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.manage_subjects') }}">Subjects</a>
+                    </li> <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin.summary') }}">Summary</a>
+                    </li>
+                </ul>
+                <span class="navbar-text" style="color: aliceblue;">
+                    Welcome, Admin | <a href="{{ url_for('main.logout') }}" class="text-danger">Logout</a>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+    <!-- Admin Dashboard Content -->
+    <div class="container mt-4">
+        <h2 class="text-center text-primary font-weight-bold">Welcome to Admin Dashboard!</h2>
+        <p class="text-center text-muted">Manage subjects, chapters, quizzes, and users efficiently.</p>
+
+        <div class="row mt-4">
+            <!-- Dashboard Card: Subjects -->
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center">
+                    <div class="card-header bg-primary text-white">Subjects</div>
+                    <div class="card-body">
+                        <p class="text-muted">Total Subjects: {{ subjects | length }}</p>
+                        <a href="{{ url_for('admin.manage_subjects') }}" class="btn btn-primary">Manage Subjects</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Card: Quizzes -->
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center">
+                    <div class="card-header bg-success text-white">Quizzes</div>
+                    <div class="card-body">
+                        <p class="text-muted">Total Quizzes: {{ quizzes | length }}</p>
+                        <a href="{{ url_for('admin.manage_quizzes') }}" class="btn btn-success">Manage Quizzes</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Card: Users -->
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center">
+                    <div class="card-header bg-warning text-dark">Users</div>
+                    <div class="card-body">
+                        <p class="text-muted">Total Users: {{ Users | length }}</p>
+                        <a href="{{ url_for('admin.manage_users') }}" class="btn btn-warning">Manage Users</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row mt-5">
+            <h3 class="text-primary">Manage Subjects</h3>
+            {% for subject in subjects %}
+            <div class="col-md-4">
+                <div class="card shadow-sm text-center">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">{{ subject.name }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Total Chapters: {{ subject.chapters.count() }}</p>
+
+                        <div class="action-buttons">
+                            <a href="{{ url_for('admin.manage_chapters' , subject_id=subject.id)}}" class="btn btn-sm btn-primary">Manage Chapters</a>
+                            <a href="{{ url_for('admin.edit_subject', subject_id=subject.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="{{ url_for('admin.delete_subject', subject_id=subject.id) }}" method="POST" style="display:inline;">
+                                <button type="submit"  class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Add Subject Button -->
+        
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

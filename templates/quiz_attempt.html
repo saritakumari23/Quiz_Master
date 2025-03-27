@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Attempt Quiz</title>
+    <script>
+        let timeLeft = 120;  // e.g., 2 minutes
+        function countdown() {
+            let timer = document.getElementById('timer');
+            if (timeLeft <= 0) {
+                document.getElementById('quizForm').submit();
+            } else {
+                timer.innerHTML = timeLeft + ' seconds remaining';
+                timeLeft--;
+                setTimeout(countdown, 1000);
+            }
+        }
+        window.onload = countdown;
+    </script>
+</head>
+<body class="container mt-4">
+    <h2>{{ quiz.title }}</h2>
+    <div class="alert alert-info" id="timer"></div>
+    <form method="POST" id="quizForm">
+        {% for q in questions %}
+            <div class="mb-3">
+                <p><strong>{{ loop.index }}. {{ q.question_statement }}</strong></p>
+                {% for opt in [q.option1, q.option2, q.option3, q.option4] %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="{{ q.id }}" value="{{ loop.index }}">
+                        <label class="form-check-label">{{ opt }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success">Submit Quiz</button>
+    </form>
+</body>
+</html>

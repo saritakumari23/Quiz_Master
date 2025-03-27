@@ -1,0 +1,127 @@
+{% block content %}
+<style>
+    /* Full-page container */
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        justify-content: center;
+        align-items: center;
+        background: #f8f9fa; /* Light gray background */
+        padding: 40px 0; /* Adds space at the top and bottom */
+    }
+
+    /* Login card styling */
+    .login-card {
+        display: flex;
+        background: white;
+        width: 400px;
+        border-radius: 16px;
+        box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 30px;
+        text-align: center;
+    }
+
+    /* Form styling */
+    .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: block;
+        color: #333;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+        transition: 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
+        outline: none;
+    }
+
+    /* Login button */
+    .btn-login {
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        width: 100%;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-login:hover {
+        background: #0056b3;
+    }
+
+    /* Register link */
+    .register-link {
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 1rem;
+    }
+
+    .register-link a {
+        color: #007bff;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-content">
+            <h2>Login</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group">
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control", placeholder="Enter your email") }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.password.label(class="form-label") }}
+                    {{ form.password(class="form-control", placeholder="Enter your password") }}
+                </div>
+
+                <button type="submit" class="btn btn-login">Login</button>
+            </form>
+
+            <div class="register-link">
+                Don't have an account? <a href="{{ url_for('main.register') }}">Register</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

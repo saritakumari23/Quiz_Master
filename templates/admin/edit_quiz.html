@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Quiz</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<!-- ✅ Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ url_for('admin.dashboard') }}">Quiz Management</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('admin.manage_subjects') }}">Subjects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url_for('admin.manage_quizzes') }}">Quizzes</a>
+                </li>
+            </ul>
+            <span class="navbar-text">
+                Welcome, Admin | <a href="{{ url_for('main.logout') }}" class="text-danger">Logout</a>
+            </span>
+        </div>
+    </div>
+</nav>
+
+<!-- ✅ Flash Messages -->
+<div class="container mt-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<!-- ✅ Edit Quiz Form -->
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Quiz</h2>
+
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            Update Quiz Details
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+<!-- Subject Dropdown -->
+<select name="subject_id" class="form-select" required>
+    <option value="">Select a Subject</option>
+    {% for subject_id, subject_name in form.subject_id.choices %}
+    <option value="{{ subject_id }}" {% if subject_id == form.subject_id.data %}selected{% endif %}>
+        {{ subject_name }}
+    </option>
+    {% endfor %}
+</select>
+
+<!-- Chapter Dropdown -->
+<select name="chapter_id" class="form-select" required>
+    <option value="">Select a Chapter</option>
+    {% for chapter_id, chapter_name in form.chapter_id.choices %}
+    <option value="{{ chapter_id }}" {% if chapter_id == form.chapter_id.data %}selected{% endif %}>
+        {{ chapter_name }}
+    </option>
+    {% endfor %}
+</select>
+
+
+                <!-- Date of Quiz -->
+                <div class="mb-3">
+                    <label class="form-label">Date of Quiz:</label>
+                    {{ form.date_of_quiz(class="form-control") }}
+                </div>
+
+                <!-- Time Duration -->
+                <div class="mb-3">
+                    <label class="form-label">Time Duration (HH:MM):</label>
+                    {{ form.time_duration(class="form-control") }}
+                </div>
+
+                <!-- Validation Errors -->
+                <div class="text-danger">
+                    {% for field, errors in form.errors.items() %}
+                        {% for error in errors %}
+                            <p>{{ field }}: {{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+
+                <!-- Submit and Cancel Buttons -->
+                <button type="submit" class="btn btn-success">Save Changes</button>
+                <a href="{{ url_for('admin.manage_quizzes') }}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ JavaScript for Dynamic Chapter Selection -->
+<script>
+document.getElementById("subject-dropdown").addEventListener("change", function() {
+    let subjectId = this.value;
+    let chapterDropdown = document.getElementById("chapter-dropdown");
+
+    if (!subjectId) {
+        chapterDropdown.innerHTML = '<option value="">Select a Chapter</option>';
+        chapterDropdown.disabled = true;
+        return;
+    }
+
+    fetch(`/admin/get_chapters/${subjectId}`)
+        .then(response => response.json())
+        .then(data => {
+            chapterDropdown.innerHTML = '<option value="">Select a Chapter</option>';
+            data.chapters.forEach(chapter => {
+                let option = document.createElement("option");
+                option.value = chapter.id;
+                option.textContent = chapter.name;
+                chapterDropdown.appendChild(option);
+            });
+            chapterDropdown.disabled = false;
+        })
+        .catch(error => console.error("Error fetching chapters:", error));
+});
+</script>
+
+<!-- ✅ Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
