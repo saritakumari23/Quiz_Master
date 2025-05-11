@@ -1,6 +1,6 @@
-# QuizMaster V1
+# QuizMaster
 
-QuizMaster V1 is a web-based multi-user quiz application designed to help students prepare for exams. It allows admins to create quizzes based on subjects and chapters, while users can register, attempt quizzes, and track their scores.
+QuizMaster is a web-based multi-user quiz application designed to help students prepare for exams. It allows admins to create quizzes based on subjects and chapters, while users can register, attempt quizzes, and track their scores.
 
 ## Features
 
